@@ -2,25 +2,24 @@ import React, { useState } from 'react'
 import './AutoComplete.css'
 
 interface IAutoCompleteProps {
-    options: string[],
+    data: string[],
     id:string,
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
 }
 
-const AutoComplete = ({ options }: IAutoCompleteProps) => {
-    const [enteredWord, setEnteredWord] = useState('')
+const AutoComplete = ({ data }: IAutoCompleteProps) => {
+    const [enteredWord, setEnteredWord] = useState <string>('')
     const [filteredList, setFilteredList] = useState<string[]>([])
-    const [listIndex, setListIndex] = useState(0)
+    const [listIndex, setListIndex] = useState <number>(0)
     const [submit, setSubmit] = useState(false)
 
 
     //Filter typed word in search box and store results in new Array
-    const searchedWord = (e:any) => {
+    const searchedWord = (e:React.ChangeEvent<HTMLInputElement>) => {
         const inputWord = e.target.value
         setEnteredWord(inputWord)
         if (inputWord.length >= 1) {
-            setFilteredList(options.filter((item: string) => {
-                // return item.toLowerCase().indexOf(inputWord.toLowerCase()) > -1
+            setFilteredList(data.filter((item: string) => {
                 return item.toLowerCase().includes(inputWord.toLowerCase())
             }))
         }
@@ -30,9 +29,9 @@ const AutoComplete = ({ options }: IAutoCompleteProps) => {
     }
 
     //Handling Arrows and Enter button pressed 
-    const handleKeyDown = (e: any) => {
+    const handleKeyDown = (e:React.KeyboardEvent<HTMLInputElement>) => {
         // Upper Arrow Key
-        if (e.keyCode === 38) {
+        if (e.key === "ArrowUp") {
             if (listIndex === 0) {
                 setListIndex(filteredList.length - 1)
             }
@@ -42,14 +41,14 @@ const AutoComplete = ({ options }: IAutoCompleteProps) => {
             else setListIndex(listIndex - 1);
         }
         // Lower Arrow Key
-        else if (e.keyCode === 40) {
+        else if (e.key === "ArrowDown") {
             if (listIndex >= filteredList.length - 1) {
                 setListIndex(0);
             }
             else setListIndex(listIndex + 1);
         }
-        // Enter Key
-        else if (e.keyCode === 13) {
+        // Enter Keyx
+        else if (e.key === 'Enter') {
             setEnteredWord(filteredList[listIndex]);
             setFilteredList([]);
             setListIndex(0);
@@ -57,9 +56,9 @@ const AutoComplete = ({ options }: IAutoCompleteProps) => {
     };
 
     //Handling User Click on specific List Item
-    const handleClick = (e: any) => {
+    const handleClick = (e: React.MouseEvent<HTMLElement>) => {
         setFilteredList([]);
-        setEnteredWord(e.target.innerText);
+        setEnteredWord((e.target as any).innerText);
     };
 
     // Handling Submit Button

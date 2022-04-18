@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import AutoComplete from './components/AutoComplete/AutoComplete';
 import AutoCompleteTest from './components/AutoComplete/AutoCompleteTest';
@@ -20,18 +19,15 @@ const autoCompleteData = [
   "Parsnip", 
   "Pea", 
   "Potato", 
-  "Pumpkin", 
-  "Radish", 
+  "Pumpkin",  
   "Spinach",    
-  "Tomato", 
   "Turnip", 
 ]
 
 function App() {
   return (
     <div>
-      <AutoComplete id="autoComplete"  options={autoCompleteData} />
-      {/* <AutoCompleteTest data={autoCompleteData}/> */}
+      <AutoComplete id="autoComplete" onChange={(e)=>console.log(e.target.value)}  data={autoCompleteData} />
     </div>
   );
 }
